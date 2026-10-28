@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SE Primer — Sağlık Bilişimi Kriz Simülasyonu</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="mobile-frame" id="app-container">
+    
+    <!-- ==================== EKRAN 1: ONBOARDING ==================== -->
+    <section id="screen-onboarding" class="screen-view active">
+      <header class="app-header">
+        <div class="header-badge alert-pulse">
+          <span class="badge-icon">🚨</span>
+          <span class="badge-text">07:59:45 AM — NÖBET DEĞİŞİMİ</span>
+        </div>
+        <h1 class="header-title">08:00 Randevu Sistemi Çöktü!</h1>
+        <p class="header-subtitle">Merkezi Poliklinik Randevu Sistemi (MRS) krizinde nöbetçi yazılım mühendisi sensin.</p>
+      </header>
+
+      <form id="form-onboarding" class="onboarding-form">
+        <!-- Soru 1: Seviye -->
+        <div class="form-group">
+          <label class="form-label">1. Mühendislik Seviyen Nedir?</label>
+          <div class="level-cards">
+            <label class="level-card" for="level-junior">
+              <input type="radio" id="level-junior" name="userLevel" value="junior" checked>
+              <div class="card-content">
+                <div class="card-header">
+                  <span class="level-badge junior">💡 Bilişsel İskele</span>
+                  <span class="level-title">Yeni Başladım</span>
+                </div>
+                <p class="card-desc">Her kararda adım adım kıdemli mimar ipuçları ve kavram analojileri aktif olur. Süre baskısı yoktur.</p>
+              </div>
+            </label>
+
+            <label class="level-card" for="level-senior">
+              <input type="radio" id="level-senior" name="userLevel" value="senior">
+              <div class="card-content">
+                <div class="card-header">
+                  <span class="level-badge senior">⏱️ 60sn Kriz Sayacı</span>
+                  <span class="level-title">Deneyimliyim</span>
+                </div>
+                <p class="card-desc">Gerçek üretim baskısı! Her karar için 60 saniye süre, kriz telemetrisi ve katı SRE metrikleri.</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Soru 2: Rol -->
+        <div class="form-group">
+          <label for="role-select" class="form-label">2. Operasyonel Rolün</label>
+          <select id="role-select" name="userRole" class="styled-select">
+            <option value="backend" selected>Backend Mühendisi (Önerilen)</option>
+            <option value="devops">DevOps / SRE Mühendisi</option>
+            <option value="fullstack">Fullstack Geliştirici</option>
+            <option value="frontend">Frontend Mühendisi</option>
+          </select>
+        </div>
+
+        <!-- Soru 3: Hedef -->
+        <div class="form-group">
+          <label for="goal-select" class="form-label">3. Birincil Öğrenme Hedefin</label>
+          <select id="goal-select" name="userGoal" class="styled-select">
+            <option value="incident_management" selected>Kriz Anında Dağıtık Sistem Mimarisi</option>
+            <option value="safe_deployment">Canlıda Test Güvenliği ve Rollback</option>
+            <option value="kvkk_compliance">Sağlık Verisi Mevzuatı ve KVKK Uyumu</option>
+          </select>
+        </div>
+
+        <button type="submit" id="btn-start-simulation" class="btn-primary cta-btn">
+          <span>🚨 Nöbeti Devral ve Krize Başla (08:00)</span>
+        </button>
+      </form>
+    </section>
+
+    <!-- ==================== EKRAN 2: KRİZ / KARAR SAHNESİ ==================== -->
+    <section id="screen-crisis" class="screen-view">
+      <!-- Canlı Telemetri Barı -->
+      <div class="telemetry-bar">
+        <div class="telemetry-header">
+          <span class="step-indicator" id="step-badge">ADIM 1/3: MİMARİ DAYANIKLILIK</span>
+          <span class="timer-display" id="timer-badge">⏱️ 00:60</span>
+          <span class="hint-badge-pill" id="hint-status-pill">💡 İpucu Aktif</span>
+        </div>
+        <div class="health-progress-wrapper">
+          <div class="health-progress-labels">
+            <span>Sistem Sağlığı</span>
+            <span id="health-bar-text" class="health-val">20% (Kritik Çöküş Eşiği)</span>
+          </div>
+          <div class="health-progress-track">
+            <div id="health-bar-fill" class="health-progress-fill" style="width: 20%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kriz Senaryosu & Canlı Terminal -->
+      <div class="crisis-card">
+        <h2 id="crisis-title" class="crisis-title">08:00 Randevu Patlaması</h2>
+        <p id="crisis-description" class="crisis-desc">
+          Poliklinik randevuları açıldı! Olağan trafiğin 18 katı yük geldi. Randevu Servisi veritabanı bağlantı havuzunu (connection pool) tüketti. 15.000 hasta ve hekim "504 Gateway Timeout" alıyor.
+        </p>
+
+        <!-- Canlı Terminal Pencereleri -->
+        <div class="terminal-box">
+          <div class="terminal-header">
+            <div class="traffic-lights">
+              <span class="light red"></span>
+              <span class="light yellow"></span>
+              <span class="light green"></span>
+            </div>
+            <span class="terminal-title">live-telemetry://mrs-prod-cluster</span>
+          </div>
+          <div id="terminal-logs" class="terminal-content">
+            <div class="log-line err">[08:00:03 ERR] DB Connection Pool (500/500) SATURATED</div>
+            <div class="log-line wrn">[08:00:05 WRN] P99 Latency: 48,200ms (> SLA 200ms)</div>
+            <div class="log-line crit">[08:00:08 CRT] 504 Gateway Timeout Rate: %94.6</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Yeni Başlayanlar İçin İpucu Kartı -->
+      <div id="junior-hint-card" class="junior-hint-card">
+        <div class="hint-header">
+          <span class="hint-icon">💡</span>
+          <strong>Kıdemli Mimar İpucu:</strong>
+        </div>
+        <p id="junior-hint-text" class="hint-text">
+          Veritabanını ani yeniden başlatmak (restart), dışarıda bekleyen 15.000 isteğin sistem açıldığı an aynı anda yüklenmesine (thundering herd problemi) yol açar.
+        </p>
+      </div>
+
+      <!-- Sokratik AI Tutor Sohbet Modülü -->
+      <div class="tutor-widget">
+        <div class="tutor-header">
+          <div class="tutor-avatar">🤖</div>
+          <div class="tutor-meta">
+            <span class="tutor-name">Sokratik AI Mentör</span>
+            <span class="tutor-role">Kıdemli Sağlık Bilişimi Baş Mimarı</span>
+          </div>
+        </div>
+        <div id="tutor-messages" class="tutor-messages">
+          <div class="tutor-msg tutor">
+            <p>Nöbetçi, hastane randevu sistemi çöküş eşiğinde! Seçenekleri değerlendirirken aklına takılan mimari veya operasyonel riskleri bana danışabilirsin. Doğrudan buton seçmemi bekleme; neden-sonuç ilişkisini birlikte çözelim.</p>
+          </div>
+        </div>
+        <form id="tutor-form" class="tutor-input-bar">
+          <input type="text" id="tutor-input" class="tutor-input" placeholder="AI Mentöre soru sor (örn: DB restart atarsak ne olur?)" autocomplete="off">
+          <button type="submit" id="tutor-send-btn" class="tutor-send-btn" title="Gönder">➤</button>
+        </form>
+      </div>
+
+      <!-- Karar Butonları -->
+      <div class="decision-section">
+        <h3 id="decision-prompt" class="decision-heading">Hangi Acil Müdahaleyi Yapacaksın?</h3>
+        <div class="decision-buttons">
+          <button id="btn-option-a" class="btn-decision option-a">
+            <span class="btn-key">A</span>
+            <div class="btn-text-group">
+              <span id="label-option-a" class="btn-label">Circuit Breaker Aç & İstekleri Kuyrukta Tamponla</span>
+              <span id="sub-option-a" class="btn-sub">Gelen trafiğe anında hızlı hata dön ve Kafka/RabbitMQ ile asenkron tamponla.</span>
+            </div>
+          </button>
+
+          <button id="btn-option-b" class="btn-decision option-b">
+            <span class="btn-key">B</span>
+            <div class="btn-text-group">
+              <span id="label-option-b" class="btn-label">Havuzu 10 Katına Çıkar & Primary DB'ye Restart At</span>
+              <span id="sub-option-b" class="btn-sub">Bağlantı sınırını 5.000 yap ve takılan sorguları temizlemek için canlı veritabanını yeniden başlat.</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== EKRAN 3: SONUÇ / POST-MORTEM ==================== -->
+    <section id="screen-result" class="screen-view">
+      <div class="result-header">
+        <div id="result-badge-container">
+          <!-- Başarı veya Başarısızlık Rozeti -->
+        </div>
+        <h1 id="result-title" class="result-title">Olay Değerlendirme Raporu</h1>
+        <p id="result-subtitle" class="result-subtitle">Nöbet Sonrası Resmi İnceleme Raporu (Post-Mortem)</p>
+      </div>
+
+      <!-- Metrik Karnesi -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">Sistem Erişilebilirliği</span>
+          <span id="metric-availability" class="metric-value">--</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Veri / Randevu Kaybı</span>
+          <span id="metric-data-loss" class="metric-value">--</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">KVKK & Mevzuat Uyumu</span>
+          <span id="metric-kvkk-status" class="metric-value">--</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Mühendislik Skoru</span>
+          <span id="metric-score" class="metric-value">--</span>
+        </div>
+      </div>
+
+      <!-- Post-Mortem Notu -->
+      <div class="post-mortem-box">
+        <h3 class="post-mortem-heading">📋 Kıdemli Başmimar Post-Mortem Değerlendirmesi</h3>
+        <p id="post-mortem-text" class="post-mortem-text">
+          Değerlendirme yükleniyor...
+        </p>
+      </div>
+
+      <!-- Aksiyon Butonları -->
+      <div class="result-actions">
+        <button id="btn-restart" class="btn-primary">
+          <span>🔄 Nöbeti Yeniden Başlat (Tekrar Dene)</span>
+        </button>
+        <button id="btn-copy-report" class="btn-secondary">
+          <span>📋 Post-Mortem Raporunu Kopyala</span>
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="google_ai_studio/tutor_service.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
